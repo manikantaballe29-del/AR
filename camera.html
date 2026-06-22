@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+<title>AR Camera</title>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#player {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  display: none;
+  z-index: 9999;
+}
+
+#mainVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="player">
+  <video id="mainVideo" controls></video>
+</div>
+
+<a-scene
+mindar-image="imageTargetSrc: targets.mind;"
+color-space="sRGB"
+renderer="colorManagement: true"
+vr-mode-ui="enabled: false"
+device-orientation-permission-ui="enabled: false">
+
+<a-camera
+position="0 0 0"
+look-controls="enabled: false">
+</a-camera>
+
+<a-entity id="target0"  mindar-image-target="targetIndex: 0"></a-entity>
+<a-entity id="target1"  mindar-image-target="targetIndex: 1"></a-entity>
+</a-scene>
+
+<script>
+const player = document.getElementById("player");
+const video = document.getElementById("mainVideo");
+
+const videoMap = [
+  "video1.mp4",
+  "video2.mp4",
+];
+
+for (let i = 0; i < 19; i++) {
+
+  const target = document.getElementById("target" + i);
+
+  target.addEventListener("targetFound", () => {
+
+    video.pause();
+    video.currentTime = 0;
+
+    video.src = videoMap[i];
+
+    player.style.display = "block";
+
+    video.play().catch(() => {});
+
+  });
+
+  target.addEventListener("targetLost", () => {
+
+    setTimeout(() => {
+
+      video.pause();
+      player.style.display = "none";
+
+    }, 500);
+
+  });
+
+}
+</script>
+
+</body>
+</html>
