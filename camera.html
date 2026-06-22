@@ -38,7 +38,7 @@ html, body {
 <body>
 
 <div id="player" style="display:none;">
-  <video id="mainVideo" controls playsinline></video>
+  <video id="mainVideo" playsinline style="display:none;"></video>
 </div>
 
 <a-scene
@@ -70,27 +70,30 @@ for (let i = 0; i < 2; i++) {
 
   target.addEventListener("targetFound", () => {
 
+  video.pause();
+  video.currentTime = 0;
+
+  video.src = videoMap[i];
+
+  video.style.display = "block";
+  player.style.display = "block";
+
+  video.play().catch(() => {});
+
+});
+
+ target.addEventListener("targetLost", () => {
+
+  setTimeout(() => {
+
     video.pause();
-    video.currentTime = 0;
 
-    video.src = videoMap[i];
+    video.style.display = "none";
+    player.style.display = "none";
 
-    player.style.display = "block";
+  }, 500);
 
-    video.play().catch(() => {});
-
-  });
-
-  target.addEventListener("targetLost", () => {
-
-    setTimeout(() => {
-
-      video.pause();
-      player.style.display = "none";
-
-    }, 500);
-
-  });
+});
 
 }
 </script>
