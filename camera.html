@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="preload" href="targets.mind" as="fetch" crossorigin="anonymous">
-
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
@@ -40,7 +38,7 @@ html, body {
 <body>
 
 <div id="player">
-  <video id="mainVideo" controls></video>
+  <video id="mainVideo" controls playsinline></video>
 </div>
 
 <a-scene
@@ -87,8 +85,10 @@ for (let i = 0; i < 2; i++) {
   target.addEventListener("targetLost", () => {
 
     setTimeout(() => {
+
       video.pause();
       player.style.display = "none";
+
     }, 500);
 
   });
